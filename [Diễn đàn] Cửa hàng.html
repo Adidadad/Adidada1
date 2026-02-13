@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diễn đàn Thê Duyệt - Cửa hàng</title>
+    <link
+      rel="stylesheet"
+      href="https://fontsapi.zeoseven.com/292/main/result.css"
+    />
+  </head>
+
+  <body>
+    <style>
+      :root {
+        --dark-red: #c92a2a;
+        --blood-red: #e03131;
+        --light-red: #ff6b6b;
+        --dark-gray: #1a1a1a;
+        --gray: #2a2a2a;
+        --light-gray: #3a3a3a;
+        --text-main: #e0e0e0;
+        --text-dim: #999;
+        --text-dimmer: #666;
+        --gold: #ffd700;
+        --border: rgba(220, 20, 60, 0.2);
+        --hover-bg: rgba(220, 20, 60, 0.08);
+        --base-font-size: 14px;
+      }
+
+      [data-theme="light"] {
+        --dark-red: #c92a2a;
+        --blood-red: #e03131;
+        --light-red: #ff6b6b;
+        --dark-gray: #f5f5f5;
+        --gray: #ececec;
+        --light-gray: #e0e0e0;
+        --text-main: #2a2a2a;
+        --text-dim: #666;
+        --text-dimmer: #999;
+        --gold: #d97706;
+        --border: rgba(220, 20, 60, 0.15);
+        --hover-bg: rgba(220, 20, 60, 0.05);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .shop-container {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+        background: var(--dark-gray);
+        font-size: var(--base-font-size, 14px);
+        border-radius: 0;
+        overflow: hidden;
+      }
+
+      .shop-container.font-medium {
+        --base-font-size: 16px;
+      }
+
+      .shop-container.font-large {
+        --base-font-size: 18px;
+      }
+
+      .shop-container.font-xlarge {
+        --base-font-size: 20px;
+      }
+
+      .shop-header {
+        background: var(--blood-red);
+        padding: 10px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .shop-title {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .back-button {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.85em;
+        font-weight: 500;
+        outline: none;
+      }
+
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .theme-toggle {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.85em;
+        font-weight: 500;
+        outline: none;
+      }
+
+      .theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .shop-content {
+        padding: 0;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      .category-section {
+        background: var(--dark-gray);
+      }
+
+      .category-title {
+        background: var(--gray);
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.95em;
+        font-weight: 600;
+        color: var(--blood-red);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .item-card {
+        background: var(--dark-gray);
+        padding: 16px;
+        cursor: pointer;
+        transition: background 0.15s;
+        border: none;
+      }
+
+      .item-card:hover {
+        background: var(--hover-bg);
+      }
+
+      .item-name {
+        font-size: 1em;
+        color: var(--text-main);
+        font-weight: 600;
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+
+      .item-desc {
+        font-size: 0.85em;
+        color: var(--text-dim);
+        margin-bottom: 12px;
+        line-height: 1.5;
+        min-height: 40px;
+      }
+
+      .item-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+      }
+
+      .price-label {
+        color: var(--text-dim);
+        font-size: 0.85em;
+      }
+
+      .price-value {
+        color: var(--gold);
+        font-weight: 700;
+        font-size: 1.1em;
+      }
+
+      .buy-button {
+        width: 100%;
+        background: var(--blood-red);
+        border: none;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        font-size: 0.9em;
+        outline: none;
+      }
+
+      .buy-button:hover {
+        background: var(--light-red);
+      }
+
+      .buy-button:active {
+        transform: scale(0.98);
+      }
+
+      .pagination {
+        background: var(--gray);
+        border-top: 1px solid var(--border);
+        padding: 12px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .page-button {
+        background: var(--blood-red);
+        border: none;
+        color: #fff;
+        padding: 6px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        font-size: 0.9em;
+        outline: none;
+        min-width: 70px;
+      }
+
+      .page-button:hover:not(:disabled) {
+        background: var(--light-red);
+      }
+
+      .page-button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .page-indicator {
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.95em;
+        padding: 0 8px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--gray);
+        border: 2px solid var(--blood-red);
+        border-radius: 8px;
+        padding: 24px;
+        max-width: 400px;
+        width: 90%;
+      }
+
+      .modal-title {
+        font-size: 1.2em;
+        color: var(--blood-red);
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+
+      .modal-text {
+        color: var(--text-main);
+        margin-bottom: 20px;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 12px;
+      }
+
+      .modal-button {
+        flex: 1;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+        outline: none;
+      }
+
+      .confirm-button {
+        background: var(--blood-red);
+        color: #fff;
+      }
+
+      .confirm-button:hover {
+        background: var(--light-red);
+      }
+
+      .cancel-button {
+        background: var(--light-gray);
+        color: var(--text-main);
+      }
+
+      .cancel-button:hover {
+        background: var(--gray);
+      }
+
+      @media (max-width: 768px) {
+        .shop-container {
+          font-size: var(--base-font-size, 13px);
+        }
+
+        .shop-container.font-medium {
+          --base-font-size: 15px;
+        }
+
+        .shop-container.font-large {
+          --base-font-size: 17px;
+        }
+
+        .shop-container.font-xlarge {
+          --base-font-size: 19px;
+        }
+
+        .shop-header {
+          padding: 8px 12px;
+        }
+
+        .items-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+
+        .item-card {
+          padding: 12px;
+        }
+
+        .pagination {
+          padding: 10px 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .items-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .header-content {
+          flex-wrap: wrap;
+        }
+
+        .shop-title {
+          font-size: 1.1em;
+        }
+
+        .pagination {
+          flex-wrap: wrap;
+        }
+
+        .page-button {
+          padding: 5px 12px;
+          font-size: 0.85em;
+          min-width: 60px;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(220, 20, 60, 0.3);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(220, 20, 60, 0.5);
+      }
+
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+
+    <div class="shop-container" id="shop-container">
+      <header class="shop-header">
+        <div class="header-content">
+          <h1 class="shop-title">
+            <span>🛒</span>
+            <span>Cửa hàng diễn đàn</span>
+          </h1>
+
+          <div class="header-right">
+            <button class="back-button" onclick="backToMain()">
+              ← Trở về diễn đàn
+            </button>
+            <button class="theme-toggle" onclick="cycleFontSize()">
+              <span id="font-size-icon">A</span>
+            </button>
+            <button class="theme-toggle" onclick="toggleTheme()">
+              <span id="theme-icon">🌙</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="shop-content">
+        <div class="page active" data-page="1">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>💊</span>
+              <span>Đồ dùng tình thú cơ bản</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Bộ dầu bôi trơn</div>
+                <div class="item-desc">
+                  Ba loại dầu bôi trơn gốc nước, gốc silicon, gốc dầu, thích hợp các trường hợp khác nhau
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">300 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Bộ dầu bôi trơn', 300)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Bộ trói buộc</div>
+                <div class="item-desc">Còng tay, còng chân, bịt mắt, bịt miệng trọn bộ công cụ trói buộc</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">800 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Bộ trói buộc', 800)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Tổ hợp gậy rung</div>
+                <div class="item-desc">
+                  Trứng rung, gậy rung, máy rung điều khiển từ xa và nhiều loại đồ chơi rung khác
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">600 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Tổ hợp gậy rung', 600)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🔧</span>
+              <span>Công cụ hỗ trợ nâng cao</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Xịt kéo dài thời gian</div>
+                <div class="item-desc">Sản phẩm kéo dài chuyên nghiệp, kéo dài thời gian tác chiến</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">500 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Xịt kéo dài thời gian', 500)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Bộ trang phục tình thú</div>
+                <div class="item-desc">
+                  Trang phục y tá, hầu gái, học sinh và các trang phục nhập vai khác
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Bộ trang phục tình thú', 1000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Thiết bị quay phim chuyên nghiệp</div>
+                <div class="item-desc">Máy quay phim độ nét cao và bộ chân máy</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">2000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Thiết bị quay phim chuyên nghiệp', 2000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="2">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>⛓️</span>
+              <span>Dụng cụ SM chuyên nghiệp</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Bộ công cụ roi đánh</div>
+                <div class="item-desc">
+                  Roi da, roi ngựa, roi mây và nhiều loại công cụ đánh đập khác, có thể dùng trong điều giáo
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1200 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Bộ công cụ roi đánh', 1200)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Bộ kẹp vú kẹp âm</div>
+                <div class="item-desc">
+                  Kẹp đầu vú, kẹp âm vật chuyên nghiệp, kèm dây xích vật nặng và độ lực có thể điều chỉnh
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">800 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Bộ kẹp vú kẹp âm', 800)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Tổ hợp dụng cụ mở rộng</div>
+                <div class="item-desc">Dụng cụ mở rộng hậu môn, dụng cụ mở rộng âm đạo, nhiều kích cỡ tùy chọn</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1500 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Tổ hợp dụng cụ mở rộng', 1500)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Đồ chơi điện giật</div>
+                <div class="item-desc">
+                  Gậy điện, miếng dán điện, có thể tiến hành kích thích điện giật lên các bộ phận mẫn cảm
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">2000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Đồ chơi điện giật', 2000)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>💉</span>
+              <span>Loại hỗ trợ bằng thuốc</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Thuốc kích dục</div>
+                <div class="item-desc">
+                  Thuốc kích dục hiệu quả mạnh, khiến thê tử của người khác dục vọng tăng vọt, chủ động cầu thao
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Thuốc kích dục', 1000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Xịt mê dược</div>
+                <div class="item-desc">
+                  Mê dược không màu không vị, có thể sử dụng khi thê tử của người khác không hay biết
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">800 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Xịt mê dược', 800)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Thuốc mất trí nhớ</div>
+                <div class="item-desc">Sau khi uống sẽ mất trí nhớ ngắn hạn, thích hợp một số trường hợp đặc thù</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1500 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Thuốc mất trí nhớ', 1500)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="3">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>☠️</span>
+              <span>Đạo cụ kích thích cực đoan</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Vòng cổ ngạt thở</div>
+                <div class="item-desc">Vòng cổ có thể kiểm soát hô hấp, trải nghiệm khoái cảm ngạt thở</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1200 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Vòng cổ ngạt thở', 1200)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Công cụ kim châm</div>
+                <div class="item-desc">
+                  Bộ kim tiêm y tế, có thể châm vào đầu vú, âm vật và các bộ phận khác
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">1000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Công cụ kim châm', 1000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Bộ thụt rửa</div>
+                <div class="item-desc">
+                  Công cụ thụt rửa chuyên nghiệp, làm sạch đường ruột hoặc tiến hành cách chơi bài tiết
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">600 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Bộ thụt rửa', 600)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>👥</span>
+              <span>Dịch vụ vận động nhiều người</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm song phi</div>
+                <div class="item-desc">
+                  Hai vị thê tử của người khác cùng tham gia, cảnh tượng một chọi hai kích thích
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">5000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Trải nghiệm song phi', 5000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Hoạt động quần giao 3P</div>
+                <div class="item-desc">Một cặp phu thê thêm một nữ giới khác, hỗn chiến nhiều người</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">8000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Hoạt động quần giao 3P', 8000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Vé vào cửa tiệc đổi vợ</div>
+                <div class="item-desc">Tiệc đổi vợ quy mô lớn, nhiều cặp phu thê và trai đơn tự do tổ hợp</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">10000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Vé vào cửa tiệc đổi vợ', 10000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="4">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🚫</span>
+              <span>Dịch vụ cách chơi cấm kỵ</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Mẫu nữ cộng thị</div>
+                <div class="item-desc">Phu thê hàng mẫu nữ, đồng thời thao làm mẫu thân và nữ nhi</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">15000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Mẫu nữ cộng thị', 15000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Dịch vụ chị em hoa</div>
+                <div class="item-desc">Phu thê hàng chị em ruột, đồng thời hưởng dụng thân thể hai chị em</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">12000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Dịch vụ chị em hoa', 12000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Chuyên trường phụ nữ có thai</div>
+                <div class="item-desc">
+                  Thê tử của người khác đang mang thai, trải nghiệm khoái cảm đặc thù khi thao làm phụ nữ có thai
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">8000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Chuyên trường phụ nữ có thai', 8000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm loli</div>
+                <div class="item-desc">
+                  Diễn đàn sắp xếp thiếu nữ vị thành niên, trai đơn có thể thao làm tiểu huyệt non nớt
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">20000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Trải nghiệm loli', 20000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Dịch vụ shota</div>
+                <div class="item-desc">
+                  Diễn đàn sắp xếp nam hài vị thành niên, trai đơn có thể thao làm hậu huyệt non nớt
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">18000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Dịch vụ shota', 18000)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="5">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🚫</span>
+              <span>Dịch vụ cách chơi cấm kỵ (tiếp)</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm thú giao</div>
+                <div class="item-desc">
+                  Diễn đàn cung cấp động vật được huấn luyện bài bản, thê tử của người khác có thể giao phối với động vật
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">15000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Trải nghiệm thú giao', 15000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Cách chơi bài tiết</div>
+                <div class="item-desc">
+                  Diễn đàn sắp xếp thê tử của người khác phối hợp cách chơi bài tiết, có thể tiến hành thánh thủy, hoàng kim và các cách chơi cực đoan khác
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">10000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Cách chơi bài tiết', 10000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Dịch vụ ái tử thi</div>
+                <div class="item-desc">
+                  Diễn đàn cung cấp tử thi tươi mới hoặc thê tử của người khác phối hợp giả chết, trải nghiệm khoái cảm gian thi
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">25000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Dịch vụ ái tử thi', 25000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Sân bạo lực máu tanh</div>
+                <div class="item-desc">
+                  Diễn đàn sắp xếp thê tử của người khác có thể chịu đựng bạo lực, trai đơn có thể thi triển thương tổn chân thực trong tình ái
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">20000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Sân bạo lực máu tanh', 20000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="6">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🎓</span>
+              <span>Dịch vụ hướng dẫn chuyên nghiệp</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Khóa học đào tạo kỹ thuật</div>
+                <div class="item-desc">Trai đơn cấp truyền thuyết giảng dạy, truyền thụ kỹ xảo tình ái</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">3000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Khóa học đào tạo kỹ thuật', 3000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Hướng dẫn thực chiến một kèm một</div>
+                <div class="item-desc">Trai đơn cấp truyền thuyết quan sát hiện trường và đưa ra kiến nghị cải tiến</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">5000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Hướng dẫn thực chiến một kèm một', 5000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🌟</span>
+              <span>Trải nghiệm bối cảnh cực hạn</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Khiêu chiến nơi công cộng</div>
+                <div class="item-desc">Rạp chiếu phim, phòng thử đồ trung tâm thương mại và các nơi công cộng khác làm tình</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">6000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Khiêu chiến nơi công cộng', 6000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm dã chiến ngoài trời</div>
+                <div class="item-desc">Công viên, rừng núi và các nơi ngoài trời làm tình</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">4000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Trải nghiệm dã chiến ngoài trời', 4000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Chuyên trường rung xe</div>
+                <div class="item-desc">Trong xe hơi sang trọng thao làm thê tử của người khác</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">3000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Chuyên trường rung xe', 3000)">
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="7">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>🎭</span>
+              <span>Trải nghiệm nhập vai</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Kịch bản cưỡng chế xâm phạm</div>
+                <div class="item-desc">Thê tử của người khác phối hợp diễn xuất kịch bản bị cưỡng chế xâm phạm</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">7000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Kịch bản cưỡng chế xâm phạm', 7000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Kịch bản cấm luyến sư sinh</div>
+                <div class="item-desc">Thê tử của người khác đóng vai học sinh, trai đơn đóng vai thầy giáo</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">5000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Kịch bản cấm luyến sư sinh', 5000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Kịch bản điều giáo chủ tớ</div>
+                <div class="item-desc">Thê tử của người khác đóng vai hầu gái, trai đơn thỏa thích điều giáo</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">6000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Kịch bản điều giáo chủ tớ', 6000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Kịch bản loạn luân cha con</div>
+                <div class="item-desc">
+                  Thê tử của người khác đóng vai con gái, trai đơn đóng vai cha, trải nghiệm cấm kỵ loạn luân
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">8000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Kịch bản loạn luân cha con', 8000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Kịch bản xâm phạm y bác sĩ bệnh nhân</div>
+                <div class="item-desc">
+                  Thê tử của người khác đóng vai bệnh nhân, trai đơn đóng vai bác sĩ, tiến hành kiểm tra thân thể và xâm phạm
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">7000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Kịch bản xâm phạm y bác sĩ bệnh nhân', 7000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="page" data-page="8">
+          <section class="category-section">
+            <h2 class="category-title">
+              <span>💎</span>
+              <span>Trải nghiệm riêng tư đỉnh cấp</span>
+            </h2>
+
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm thê tử người nổi tiếng</div>
+                <div class="item-desc">Thê tử của nhân vật công chúng có chút danh tiếng</div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">20000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Trải nghiệm thê tử người nổi tiếng', 20000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Dịch vụ phá trinh xử nữ</div>
+                <div class="item-desc">
+                  Thê tử trẻ tuổi của người khác chưa từng trải sự đời, tự tay phá khai màng trinh
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">25000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Dịch vụ phá trinh xử nữ', 25000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Trải nghiệm viễn chinh hải ngoại</div>
+                <div class="item-desc">
+                  Phu thê dị quốc hải ngoại chủ động mời mọc, bao gồm ăn ở đi lại, tiệc tùng dâm mị ba người
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">30000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Trải nghiệm viễn chinh hải ngoại', 30000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Tiệc luân gian</div>
+                <div class="item-desc">
+                  Diễn đàn tổ chức nhiều trai đơn luân phiên thao làm một vị thê tử của người khác, trải nghiệm khoái cảm tập thể lăng nhục
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">15000 điểm</span>
+                </div>
+                <button class="buy-button" onclick="buyItem('Tiệc luân gian', 15000)">
+                  Mua ngay
+                </button>
+              </div>
+
+              <div class="item-card">
+                <div class="item-name">Sân khấu sỉ nhục công khai</div>
+                <div class="item-desc">
+                  Trước mặt mọi người sỉ nhục và thao làm thê tử của người khác, thỏa mãn thói quen phô bày và thói quen sỉ nhục
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Giá</span>
+                  <span class="price-value">12000 điểm</span>
+                </div>
+                <button
+                  class="buy-button"
+                  onclick="buyItem('Sân khấu sỉ nhục công khai', 12000)"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="pagination">
+          <button class="page-button" id="prev-btn" onclick="changePage(-1)">
+            Trang trước
+          </button>
+          <div class="page-indicator">
+            <span id="current-page">1</span> / <span id="total-pages">8</span>
+          </div>
+          <button class="page-button" id="next-btn" onclick="changePage(1)">
+            Trang sau
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="purchase-modal">
+      <div class="modal-content">
+        <div class="modal-title">Xác nhận mua</div>
+        <div class="modal-text" id="modal-text"></div>
+        <div class="modal-buttons">
+          <button
+            class="modal-button confirm-button"
+            onclick="confirmPurchase()"
+          >
+            Xác nhận
+          </button>
+          <button class="modal-button cancel-button" onclick="closeModal()">
+            Hủy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentPage = 1;
+      const totalPages = 8;
+      let currentItem = "";
+      let currentPrice = 0;
+
+      function cycleFontSize() {
+        const container = document.getElementById("shop-container");
+        const icon = document.getElementById("font-size-icon");
+        const fontSizes = ["small", "medium", "large", "xlarge"];
+        const fontIcons = ["A", "A+", "A++", "A+++"];
+
+        let currentSize = localStorage.getItem("forum-font-size") || "small";
+        let currentIndex = fontSizes.indexOf(currentSize);
+        let nextIndex = (currentIndex + 1) % fontSizes.length;
+        let nextSize = fontSizes[nextIndex];
+
+        container.classList.remove("font-medium", "font-large", "font-xlarge");
+        if (nextSize !== "small") {
+          container.classList.add("font-" + nextSize);
+        }
+
+        icon.textContent = fontIcons[nextIndex];
+        localStorage.setItem("forum-font-size", nextSize);
+      }
+
+      function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById("theme-icon");
+        const isLight = body.getAttribute("data-theme") === "light";
+        if (isLight) {
+          body.removeAttribute("data-theme");
+          icon.textContent = "🌙";
+          localStorage.setItem("forum-theme", "dark");
+        } else {
+          body.setAttribute("data-theme", "light");
+          icon.textContent = "☀️";
+          localStorage.setItem("forum-theme", "light");
+        }
+      }
+
+      function syncThemeFromStorage(e) {
+        if (e.key === "forum-theme") {
+          const body = document.body;
+          const icon = document.getElementById("theme-icon");
+
+          if (e.newValue === "light") {
+            body.setAttribute("data-theme", "light");
+            if (icon) icon.textContent = "☀️";
+          } else {
+            body.removeAttribute("data-theme");
+            if (icon) icon.textContent = "🌙";
+          }
+        }
+
+        if (e.key === "forum-font-size") {
+          const container = document.getElementById("shop-container");
+          const icon = document.getElementById("font-size-icon");
+          const fontSizes = ["small", "medium", "large", "xlarge"];
+          const fontIcons = ["A", "A+", "A++", "A+++"];
+
+          container.classList.remove("font-medium", "font-large", "font-xlarge");
+          if (e.newValue && e.newValue !== "small") {
+            container.classList.add("font-" + e.newValue);
+          }
+
+          let index = fontSizes.indexOf(e.newValue || "small");
+          if (icon) icon.textContent = fontIcons[index];
+        }
+      }
+
+      window.addEventListener("storage", syncThemeFromStorage);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const theme = localStorage.getItem("forum-theme");
+        if (theme === "light") {
+          document.body.setAttribute("data-theme", "light");
+          document.getElementById("theme-icon").textContent = "☀️";
+        }
+
+        const fontSize = localStorage.getItem("forum-font-size") || "small";
+        const container = document.getElementById("shop-container");
+        const fontIcon = document.getElementById("font-size-icon");
+        const fontSizes = ["small", "medium", "large", "xlarge"];
+        const fontIcons = ["A", "A+", "A++", "A+++"];
+
+        if (fontSize !== "small") {
+          container.classList.add("font-" + fontSize);
+        }
+
+        let index = fontSizes.indexOf(fontSize);
+        if (fontIcon) {
+          fontIcon.textContent = fontIcons[index];
+        }
+
+        updatePagination();
+      });
+
+      function changePage(direction) {
+        const newPage = currentPage + direction;
+        if (newPage < 1 || newPage > totalPages) return;
+        currentPage = newPage;
+        updatePagination();
+        const shopContainer = document.querySelector(".shop-container");
+        if (shopContainer) {
+          shopContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      function updatePagination() {
+        const pages = document.querySelectorAll(".page");
+        pages.forEach((page, index) => {
+          if (index + 1 === currentPage) {
+            page.classList.add("active");
+          } else {
+            page.classList.remove("active");
+          }
+        });
+
+        document.getElementById("current-page").textContent = currentPage;
+        document.getElementById("total-pages").textContent = totalPages;
+
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+      }
+
+      function backToMain() {
+        const cmd = "/send Xem diễn đàn | /trigger";
+        if (typeof triggerSlash === "function") {
+          triggerSlash(cmd);
+        }
+      }
+
+      function buyItem(itemName, price) {
+        currentItem = itemName;
+        currentPrice = price;
+        const modalText = document.getElementById("modal-text");
+        modalText.textContent = `Có muốn mua ${itemName} không? Tiêu hao ${price} điểm`;
+        document.getElementById("purchase-modal").classList.add("active");
+      }
+
+      function confirmPurchase() {
+        const cmd = `/send Mua hàng hóa:${currentItem},Tiêu hao điểm:${currentPrice} | /trigger`;
+        if (typeof triggerSlash === "function") {
+          triggerSlash(cmd);
+        }
+        closeModal();
+      }
+
+      function closeModal() {
+        document.getElementById("purchase-modal").classList.remove("active");
+        currentItem = "";
+        currentPrice = 0;
+      }
+    </script>
+  </body>
+</html>
