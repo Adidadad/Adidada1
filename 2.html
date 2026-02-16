@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diễn đàn Thê Duyệt - Tùy chỉnh nhân thê</title>
+    <link
+      rel="stylesheet"
+      href="https://fontsapi.zeoseven.com/292/main/result.css"
+    />
+  </head>
+
+  <body>
+    <style>
+      :root {
+        --dark-red: #c92a2a;
+        --blood-red: #e03131;
+        --light-red: #ff6b6b;
+        --dark-gray: #1a1a1a;
+        --gray: #2a2a2a;
+        --light-gray: #3a3a3a;
+        --text-main: #e0e0e0;
+        --text-dim: #999;
+        --text-dimmer: #666;
+        --gold: #ffd700;
+        --silver: #c0c0c0;
+        --border: rgba(220, 20, 60, 0.2);
+        --hover-bg: rgba(220, 20, 60, 0.08);
+      }
+
+      [data-theme="light"] {
+        --dark-red: #c92a2a;
+        --blood-red: #e03131;
+        --light-red: #ff6b6b;
+        --dark-gray: #f5f5f5;
+        --gray: #ececec;
+        --light-gray: #e0e0e0;
+        --text-main: #2a2a2a;
+        --text-dim: #666;
+        --text-dimmer: #999;
+        --gold: #d97706;
+        --silver: #6b7280;
+        --border: rgba(220, 20, 60, 0.15);
+        --hover-bg: rgba(220, 20, 60, 0.05);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+        background: var(--dark-gray);
+        font-size: 14px;
+        position: relative;
+      }
+
+      .header {
+        background: var(--blood-red);
+        padding: 10px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header h1 {
+        font-size: 1em;
+        font-weight: 600;
+        color: #fff;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .header p {
+        display: none;
+      }
+
+      .theme-toggle {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.85em;
+        font-weight: 500;
+        outline: none;
+      }
+
+      .theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .page {
+        display: none;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .page-title {
+        font-size: 1.05em;
+        font-weight: 600;
+        color: var(--blood-red);
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .page-desc {
+        color: var(--text-dim);
+        text-align: center;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        font-size: 0.9em;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .option-card {
+        background: var(--light-gray);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        position: relative;
+      }
+
+      .option-card:hover {
+        border-color: var(--blood-red);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px var(--hover-bg);
+      }
+
+      .option-card.selected {
+        background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+        border-color: var(--gold);
+        box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
+      }
+
+      .option-card .icon {
+        font-size: 2em;
+        margin-bottom: 8px;
+      }
+
+      .option-card .label {
+        font-size: 0.9em;
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      .option-card.selected .label {
+        color: #fff;
+      }
+
+      .option-card .desc {
+        font-size: 0.75em;
+        color: var(--text-dim);
+        margin-top: 6px;
+        line-height: 1.3;
+      }
+
+      .option-card.selected .desc {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .custom-input {
+        width: 100%;
+        background: var(--dark-gray);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 10px;
+        color: var(--text-main);
+        font-size: 0.9em;
+        margin-top: 8px;
+      }
+
+      .custom-input:focus {
+        outline: none;
+        border-color: var(--blood-red);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 5px;
+        background: var(--light-gray);
+        border-radius: 3px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--blood-red), var(--light-red));
+        transition: width 0.5s ease-out;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        padding: 12px 0;
+      }
+
+      .nav-buttons-stacked {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 0;
+      }
+
+      .nav-buttons-row {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+      }
+
+      .btn-prev {
+        background: var(--light-gray);
+        color: var(--text-main);
+      }
+
+      .btn-prev:hover {
+        background: var(--hover-bg);
+      }
+
+      .btn-next {
+        background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+        color: #fff;
+      }
+
+      .btn-next:hover {
+        box-shadow: 0 0 15px rgba(220, 20, 60, 0.5);
+      }
+
+      .btn-submit {
+        background: linear-gradient(135deg, var(--gold), #ff8c00);
+        color: #000;
+        font-weight: 600;
+      }
+
+      .btn-submit:hover {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .summary-section {
+        background: var(--light-gray);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9em;
+      }
+
+      .summary-item:last-child {
+        border-bottom: none;
+      }
+
+      .summary-item.hidden {
+        display: none;
+      }
+
+      .summary-label {
+        color: var(--text-dim);
+      }
+
+      .summary-value {
+        color: var(--gold);
+        font-weight: 500;
+      }
+
+      .bottom-info {
+        background: var(--gray);
+        border-top: 1px solid var(--border);
+        padding: 12px 16px;
+        font-size: 0.8em;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+      }
+
+      .info-item.hidden {
+        display: none;
+      }
+
+      .info-label {
+        color: var(--text-dim);
+      }
+
+      .info-value {
+        color: var(--gold);
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          font-size: 13px;
+        }
+
+        .options-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(220, 20, 60, 0.3);
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(220, 20, 60, 0.5);
+      }
+
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .modal-overlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        animation: fadeIn 0.2s ease-out;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .modal-content {
+        background: var(--dark-gray);
+        border: 2px solid var(--blood-red);
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(220, 20, 60, 0.3);
+        animation: slideUp 0.3s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-title {
+        font-size: 1.1em;
+        font-weight: 600;
+        color: var(--blood-red);
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .modal-message {
+        color: var(--text-main);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 0.95em;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .modal-btn {
+        flex: 1;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .modal-btn-confirm {
+        background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+        color: #fff;
+      }
+
+      .modal-btn-confirm:hover {
+        box-shadow: 0 0 15px rgba(220, 20, 60, 0.5);
+      }
+
+      .modal-btn-cancel {
+        background: var(--light-gray);
+        color: var(--text-main);
+      }
+
+      .modal-btn-cancel:hover {
+        background: var(--hover-bg);
+      }
+
+      @media (max-width: 768px) {
+        .modal-content {
+          padding: 20px;
+        }
+
+        .modal-buttons {
+          flex-direction: column-reverse;
+        }
+
+        .modal-btn {
+          width: 100%;
+        }
+      }
+    </style>
+
+    <div class="container">
+      <div class="modal-overlay" id="confirmModal">
+        <div class="modal-content">
+          <div class="modal-title">Tùy chỉnh nhân thê</div>
+          <div class="modal-message">
+            Điều này sẽ bỏ qua quy trình tùy chỉnh nhân thê，trực tiếp vào chế độ lướt diễn đàn。
+          </div>
+          <div class="modal-buttons">
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal()">
+              Hủy
+            </button>
+            <button
+              class="modal-btn modal-btn-confirm"
+              onclick="confirmViewForum()"
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="header">
+        <div class="header-content">
+          <h1>Diễn đàn Thê Duyệt - Hệ thống tùy chỉnh</h1>
+          <button class="theme-toggle" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="page active" id="page0">
+          <div class="page-title">Chào mừng đến với Diễn đàn Thê Duyệt</div>
+          <div class="page-desc">
+            Đây là cứ điểm bí mật của những người đam mê dâm thê<br />
+            Là Trai đơn trong giới,bạn sẽ thông qua các bước sau để tùy chỉnh đối tượng hẹn hò của mình<br />
+            <span style="color: var(--gold); font-weight: 500"
+              >Lưu ý：Bạn gái/Nhân thê đã kết hôn ám chỉ đối tượng của người nam kia，không phải của bạn<br />
+              Phụ nữ độc thân là những người phụ nữ tự mình đến diễn đàn tìm bạn tình</span
+            ><br />
+            Lựa chọn mỗi bước đều sẽ tự động lưu, có thể quay lại sửa đổi bất cứ lúc nào
+          </div>
+
+          <div class="nav-buttons-stacked">
+            <div class="nav-buttons-row">
+              <button class="btn btn-next" onclick="nextPage()">
+                Bắt đầu tùy chỉnh
+              </button>
+              <button class="btn btn-submit" onclick="randomSelection()">
+                Ngẫu nhiên một chạm
+              </button>
+            </div>
+            <button class="btn btn-prev" onclick="viewForum()">
+              Không，tôi muốn xem diễn đàn trước
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page1">
+          <div class="page-title">Loại quan hệ</div>
+          <div class="page-desc">Chọn loại quan hệ bạn muốn</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectRelationshipType('Bạn gái', this)"
+            >
+              <div class="icon">💕</div>
+              <div class="label">Bạn gái</div>
+              <div class="desc">
+                Quan hệ tình lữ, trạng thái chưa cưới<br />Đằng trai chủ động dâng hiến hoặc cùng nhau khám phá
+              </div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectRelationshipType('Nhân thê đã kết hôn', this)"
+            >
+              <div class="icon">💍</div>
+              <div class="label">Nhân thê đã kết hôn</div>
+              <div class="desc">Quan hệ vợ chồng, trạng thái đã cưới<br />Chồng biết chuyện và tham gia vào đó</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectRelationshipType('Phụ nữ độc thân', this)"
+            >
+              <div class="icon">🦋</div>
+              <div class="label">Phụ nữ độc thân</div>
+              <div class="desc">Độc thân hoặc bạn đời không biết<br />Một mình tìm kiếm Trai đơn trên diễn đàn</div>
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons1">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn1"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page2">
+          <div class="page-title">Loại vóc dáng</div>
+          <div class="page-desc">Chọn vóc dáng khiến bạn rung động nhất</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('body', 'Ngự tỷ đẫy đà', this)"
+            >
+              <div class="icon">💃</div>
+              <div class="label">Ngự tỷ đẫy đà</div>
+              <div class="desc">Lồi trước vênh sau, ngực to mông cong,thân hình đầy đặn</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('body', 'Thiếu phụ mảnh mai', this)"
+            >
+              <div class="icon">🌸</div>
+              <div class="label">Thiếu phụ mảnh mai</div>
+              <div class="desc">Thon thả linh lung, khít khao thanh thuần</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('body', 'Nhân thê hơi mập', this)"
+            >
+              <div class="icon">🍑</div>
+              <div class="label">Nhân thê hơi mập</div>
+              <div class="desc">Cực kỳ đầy đặn, mềm mại phì nhiêu</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('body', 'Bà mẹ nóng bỏng khỏe khoắn', this)"
+            >
+              <div class="icon">💪</div>
+              <div class="label">Bà mẹ nóng bỏng khỏe khoắn</div>
+              <div class="desc">Săn chắc mạnh mẽ, đường nét cơ bắp rõ ràng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('body', 'Nhỏ nhắn xinh xắn', this)"
+            >
+              <div class="icon">🎀</div>
+              <div class="label">Nhỏ nhắn xinh xắn</div>
+              <div class="desc">Nhỏ nhắn tinh tế, điềm đạm đáng yêu</div>
+            </div>
+
+            <div class="option-card" onclick="selectCustomOption('body', this)">
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập dáng người tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="body"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons2">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn2"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page3">
+          <div class="page-title">Đặc điểm tính cách</div>
+          <div class="page-desc">Cô ấy sẽ là người như thế nào</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Dịu dàng hiền thục', this)"
+            >
+              <div class="icon">😊</div>
+              <div class="label">Dịu dàng hiền thục</div>
+              <div class="desc">Chu đáo ngoan ngoãn, thấu hiểu lòng người</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Lạnh lùng kiêu ngạo', this)"
+            >
+              <div class="icon">😏</div>
+              <div class="label">Lạnh lùng kiêu ngạo</div>
+              <div class="desc">Bề ngoài dè dặt, nội tâm nóng bỏng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Lẳng lơ phóng túng', this)"
+            >
+              <div class="icon">😈</div>
+              <div class="label">Lẳng lơ phóng túng</div>
+              <div class="desc">Chủ động nhiệt tình, dục cầu bất mãn</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Thanh thuần bảo thủ', this)"
+            >
+              <div class="icon">😳</div>
+              <div class="label">Thanh thuần bảo thủ</div>
+              <div class="desc">E thẹn nội tâm, dễ dàng xấu hổ</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Tri thức tao nhã', this)"
+            >
+              <div class="icon">📚</div>
+              <div class="label">Tri thức tao nhã</div>
+              <div class="desc">Khí chất xuất chúng, ăn nói phi phàm</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('personality', 'Độc lập mạnh mẽ', this)"
+            >
+              <div class="icon">👑</div>
+              <div class="label">Độc lập mạnh mẽ</div>
+              <div class="desc">Chủ đạo quan hệ, nhu cầu rõ ràng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('personality', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập tính cách tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="personality"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons3">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn3"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page4">
+          <div class="page-title">Phạm vi độ tuổi</div>
+          <div class="page-desc">Chọn độ tuổi thu hút bạn nhất</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('age', '25-30 tuổi', this)"
+            >
+              <div class="icon">🌹</div>
+              <div class="label">25-30 tuổi</div>
+              <div class="desc">Thanh xuân sức sống, vừa lập gia đình không lâu</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('age', '30-35 tuổi', this)"
+            >
+              <div class="icon">💋</div>
+              <div class="label">30-35 tuổi</div>
+              <div class="desc">Phong vận trưởng thành, ham muốn mãnh liệt</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('age', '35-40 tuổi', this)"
+            >
+              <div class="icon">🍷</div>
+              <div class="label">35-40 tuổi</div>
+              <div class="desc">Phong vận vẫn còn, kỹ thuật hạng nhất</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('age', '40-45 tuổi', this)"
+            >
+              <div class="icon">👑</div>
+              <div class="label">40-45 tuổi</div>
+              <div class="desc">Đào chín mọng, mị lực tột cùng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('age', 'Trên 45 tuổi', this)"
+            >
+              <div class="icon">💎</div>
+              <div class="label">Trên 45 tuổi</div>
+              <div class="desc">Lão luyện quyến rũ, thục nữ thâm niên</div>
+            </div>
+
+            <div class="option-card" onclick="selectCustomOption('age', this)">
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập độ tuổi tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="age"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons4">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn4"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page5">
+          <div class="page-title">Thiết lập quan hệ</div>
+          <div class="page-desc">Quan hệ đặc biệt giữa các bạn</div>
+          <div class="options-grid" id="relationOptionsGrid">
+            <div
+              class="option-card"
+              onclick="selectOption('relation', 'Hẹn hò diễn đàn', this)"
+            >
+              <div class="icon">📱</div>
+              <div class="label">Hẹn hò diễn đàn</div>
+              <div class="desc">Quen biết qua Diễn đàn Thê Duyệt</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('relation', 'Hàng xóm vụng trộm', this)"
+            >
+              <div class="icon">🏠</div>
+              <div class="label">Hàng xóm vụng trộm</div>
+              <div class="desc">Hàng xóm sống gần bên</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('relation', 'Đối tượng của bạn tốt', this)"
+            >
+              <div class="icon">🤝</div>
+              <div class="label">Đối tượng của bạn tốt</div>
+              <div class="desc">Bạn gái/Vợ của bạn tốt</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('relation', 'Đối tượng của cấp trên', this)"
+            >
+              <div class="icon">💼</div>
+              <div class="label">Đối tượng của cấp trên</div>
+              <div class="desc">Bạn gái/Phu nhân của cấp trên</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('relation', 'Bạn gái cũ', this)"
+            >
+              <div class="icon">💔</div>
+              <div class="label">Bạn gái cũ</div>
+              <div class="desc">Người yêu ngày xưa</div>
+            </div>
+
+            <div
+              class="option-card relation-solo"
+              onclick="selectOption('relation', 'Hẹn hò người lạ', this)"
+            >
+              <div class="icon">🎲</div>
+              <div class="label">Hẹn hò người lạ</div>
+              <div class="desc">Trước đây không có bất kỳ giao du nào</div>
+            </div>
+
+            <div
+              class="option-card relation-solo"
+              onclick="selectOption('relation', 'Người quen vụng trộm', this)"
+            >
+              <div class="icon">🔥</div>
+              <div class="label">Người quen vụng trộm</div>
+              <div class="desc">Đồng nghiệp/Bạn bè/Hàng xóm, giấu bạn đời đến hẹn</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('relation', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập mối quan hệ tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="relation"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons5">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn5"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page6">
+          <div class="page-title">Thân phận nghề nghiệp</div>
+          <div class="page-desc">Vai trò xã hội của cô ấy</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Người đẹp văn phòng', this)"
+            >
+              <div class="icon">👔</div>
+              <div class="label">Người đẹp văn phòng</div>
+              <div class="desc">Tinh anh công sở, tháo vát tri thức</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Nội trợ toàn thời gian', this)"
+            >
+              <div class="icon">🏡</div>
+              <div class="label">Nội trợ toàn thời gian</div>
+              <div class="desc">Giúp chồng dạy con, dịu dàng hiền thục</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Giáo viên', this)"
+            >
+              <div class="icon">📖</div>
+              <div class="label">Giáo viên</div>
+              <div class="desc">Gương mẫu cho người, tư văn bại hoại</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Nhân viên y tế', this)"
+            >
+              <div class="icon">💉</div>
+              <div class="label">Nhân viên y tế</div>
+              <div class="desc">Thiên sứ áo trắng, cám dỗ đồng phục</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Bà chủ doanh nghiệp', this)"
+            >
+              <div class="icon">💰</div>
+              <div class="label">Bà chủ doanh nghiệp</div>
+              <div class="desc">Sự nghiệp thành công, người phụ nữ mạnh mẽ</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('career', 'Nghề nghiệp tự do', this)"
+            >
+              <div class="icon">🎨</div>
+              <div class="label">Nghề nghiệp tự do</div>
+              <div class="desc">Thời gian tự do, cuộc sống tùy hứng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('career', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập nghề nghiệp tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="career"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons6">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn6"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page7">
+          <div class="page-title" id="lifeStatusTitle">Trạng thái cuộc sống</div>
+          <div class="page-desc" id="lifeStatusDesc">
+            Tại sao cặp đôi/vợ chồng gia nhập giới dâm thê
+          </div>
+          <div class="options-grid" id="lifeStatusOptionsGrid">
+          </div>
+
+          <div class="nav-buttons" id="navButtons7">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn7"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page8">
+          <div class="page-title">Trải nghiệm quá khứ</div>
+          <div class="page-desc">Kinh nghiệm tình dục và bí mật của cô ấy</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Bạn gái thanh thuần', this)"
+            >
+              <div class="icon">🌼</div>
+              <div class="label">Bạn gái thanh thuần</div>
+              <div class="desc">Giữ mình trước khi quen, chỉ từng làm với đằng trai</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Trải nghiệm bình thường', this)"
+            >
+              <div class="icon">💕</div>
+              <div class="label">Trải nghiệm bình thường</div>
+              <div class="desc">Từng có vài mối tình, kinh nghiệm tình dục bình thường</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Quá khứ phóng túng', this)"
+            >
+              <div class="icon">🔥</div>
+              <div class="label">Quá khứ phóng túng</div>
+              <div class="desc">Bạn tình đông đảo, kỹ thuật thành thạo</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Từng ngoại tình', this)"
+            >
+              <div class="icon">💔</div>
+              <div class="label">Từng ngoại tình</div>
+              <div class="desc">Từng giấu đằng trai vụng trộm, dễ tái phạm</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Từng bị điều giáo', this)"
+            >
+              <div class="icon">🔗</div>
+              <div class="label">Từng bị điều giáo</div>
+              <div class="desc">Từng bị nam giới khác điều giáo, cơ thể đã khai phá</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('pastExperience', 'Lão làng hẹn hò', this)"
+            >
+              <div class="icon">🎯</div>
+              <div class="label">Lão làng hẹn hò</div>
+              <div class="desc">Hoạt động lâu dài trên diễn đàn, kinh nghiệm phong phú</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('pastExperience', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập trải nghiệm tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="pastExperience"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons8">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn8"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page9">
+          <div class="page-title" id="maleSettingTitle">Thiết lập đằng trai</div>
+          <div class="page-desc" id="maleSettingDesc">
+            Vai trò của đằng trai trong hoạt động dâm thê
+          </div>
+          <div class="options-grid" id="maleSettingOptionsGrid">
+          </div>
+
+          <div class="nav-buttons" id="navButtons9">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn9"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page10">
+          <div class="page-title">Sở thích tình dục của cô ấy</div>
+          <div class="page-desc">Sở thích đặc biệt của cô ấy trên giường</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Bị động thừa nhận', this)"
+            >
+              <div class="icon">😌</div>
+              <div class="label">Bị động thừa nhận</div>
+              <div class="desc">Ngoan ngoãn phối hợp, mặc quân hái lượm</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Chủ động đòi hỏi', this)"
+            >
+              <div class="icon">😈</div>
+              <div class="label">Chủ động đòi hỏi</div>
+              <div class="desc">Dục cầu bất mãn, chủ động tấn công</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Sở thích khẩu giao', this)"
+            >
+              <div class="icon">👄</div>
+              <div class="label">Sở thích khẩu giao</div>
+              <div class="desc">Kỹ thuật tinh xảo, vui vẻ tận hưởng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Khai phá hậu đình', this)"
+            >
+              <div class="icon">🍑</div>
+              <div class="label">Khai phá hậu đình</div>
+              <div class="desc">Khoái cảm cấm kỵ, muốn ngừng mà không được</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Vận động nhiều người', this)"
+            >
+              <div class="icon">👥</div>
+              <div class="label">Vận động nhiều người</div>
+              <div class="desc">Kích thích thăng cấp, quần giao cuồng hoan</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('herKink', 'Chủ đạo kiểm soát', this)"
+            >
+              <div class="icon">👠</div>
+              <div class="label">Chủ đạo kiểm soát</div>
+              <div class="desc">Thích chiếm thế chủ đạo trong tình dục</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('herKink', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập sở thích tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="herKink"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons10">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn10"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page11">
+          <div class="page-title">Sở thích tình dục của bạn</div>
+          <div class="page-desc">Cách chơi bạn muốn</div>
+          <div class="options-grid">
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Dịu dàng quấn quýt', this)"
+            >
+              <div class="icon">💕</div>
+              <div class="label">Dịu dàng quấn quýt</div>
+              <div class="desc">Nước chảy đá mòn, tình dục hòa quyện</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Thô bạo chinh phục', this)"
+            >
+              <div class="icon">⚡</div>
+              <div class="label">Thô bạo chinh phục</div>
+              <div class="desc">Dã man chiếm đoạt, kiểm soát mạnh mẽ</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Sỉ nhục điều giáo', this)"
+            >
+              <div class="icon">🔗</div>
+              <div class="label">Sỉ nhục điều giáo</div>
+              <div class="desc">Ngôn ngữ sỉ nhục, tinh thần chinh phục</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Quay phim ghi lại', this)"
+            >
+              <div class="icon">📹</div>
+              <div class="label">Quay phim ghi lại</div>
+              <div class="desc">Ống kính làm chứng, lưu lại bằng chứng</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Mũ xanh trước mặt', this)"
+            >
+              <div class="icon">🎭</div>
+              <div class="label">Mũ xanh trước mặt</div>
+              <div class="desc">Đằng trai có mặt, kích thích gấp bội</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectOption('myKink', 'Phối hợp chủ đạo', this)"
+            >
+              <div class="icon">🤝</div>
+              <div class="label">Phối hợp chủ đạo</div>
+              <div class="desc">Phối hợp nhịp điệu nhà gái, thỏa mãn dục vọng kiểm soát</div>
+            </div>
+
+            <div
+              class="option-card"
+              onclick="selectCustomOption('myKink', this)"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Tùy chỉnh</div>
+              <input
+                type="text"
+                class="custom-input"
+                placeholder="Nhập sở thích tùy chỉnh"
+                onclick="event.stopPropagation()"
+                data-category="myKink"
+              />
+            </div>
+          </div>
+
+          <div class="nav-buttons" id="navButtons11">
+            <button class="btn btn-prev" onclick="prevPage()">Bước trước</button>
+            <button
+              class="btn btn-next"
+              id="nextBtn11"
+              onclick="nextPage()"
+              disabled
+            >
+              Bước tiếp theo
+            </button>
+          </div>
+        </div>
+
+        <div class="page" id="page12">
+          <div class="page-title">Xác nhận thông tin</div>
+          <div class="page-desc">Kiểm tra nội dung tùy chỉnh của bạn</div>
+          <div class="summary-section">
+            <div class="summary-item">
+              <span class="summary-label">Loại quan hệ</span>
+              <span class="summary-value" id="summaryRelationshipType">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Loại hình dáng</span>
+              <span class="summary-value" id="summaryBody">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Đặc điểm tính cách</span>
+              <span class="summary-value" id="summaryPersonality">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Phạm vi độ tuổi</span>
+              <span class="summary-value" id="summaryAge">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Thiết lập quan hệ</span>
+              <span class="summary-value" id="summaryRelation">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Thân phận nghề nghiệp</span>
+              <span class="summary-value" id="summaryCareer">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Trạng thái cuộc sống</span>
+              <span class="summary-value" id="summaryLifeStatus">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Trải nghiệm quá khứ</span>
+              <span class="summary-value" id="summaryPastExperience">-</span>
+            </div>
+
+            <div class="summary-item" id="summaryMaleSettingRow">
+              <span class="summary-label">Thiết lập đằng trai</span>
+              <span class="summary-value" id="summaryMaleSetting">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Sở thích tình dục của cô ấy</span>
+              <span class="summary-value" id="summaryHerKink">-</span>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">Sở thích tình dục của bạn</span>
+              <span class="summary-value" id="summaryMyKink">-</span>
+            </div>
+          </div>
+
+          <div class="nav-buttons-stacked">
+            <div class="nav-buttons-row">
+              <button class="btn btn-prev" onclick="prevPage()">
+                Quay lại sửa đổi
+              </button>
+              <button class="btn btn-submit" onclick="submitSelection()">
+                Bắt đầu trò chơi
+              </button>
+            </div>
+            <button class="btn btn-next" onclick="randomSelection()">
+              Ngẫu nhiên lại
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-info">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Loại quan hệ</span>
+            <span class="info-value" id="infoRelationshipType">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Thân hình</span>
+            <span class="info-value" id="infoBody">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Tính cách</span>
+            <span class="info-value" id="infoPersonality">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Tuổi tác</span>
+            <span class="info-value" id="infoAge">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Quan hệ</span>
+            <span class="info-value" id="infoRelation">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Nghề nghiệp</span>
+            <span class="info-value" id="infoCareer">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Trạng thái cuộc sống</span>
+            <span class="info-value" id="infoLifeStatus">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Trải nghiệm quá khứ</span>
+            <span class="info-value" id="infoPastExperience">-</span>
+          </div>
+
+          <div class="info-item" id="infoMaleSettingRow">
+            <span class="info-label">Thiết lập đằng trai</span>
+            <span class="info-value" id="infoMaleSetting">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Sở thích tình dục của cô ấy</span>
+            <span class="info-value" id="infoHerKink">-</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Sở thích tình dục của bạn</span>
+            <span class="info-value" id="infoMyKink">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentPage = 0;
+      const totalPages = 13;
+      const selections = {
+        relationshipType: "",
+        body: "",
+        personality: "",
+        age: "",
+        relation: "",
+        career: "",
+        lifeStatus: "",
+        pastExperience: "",
+        maleSetting: "",
+        herKink: "",
+        myKink: "",
+      };
+
+      // Cấu hình tùy chọn trạng thái cuộc sống
+      const lifeStatusOptions = {
+        couple: [
+          {
+            value: "Chủ động dâng hiến",
+            icon: "🎭",
+            desc: "Đằng trai thích nhìn trộm, chủ động đăng bài tìm Trai đơn",
+          },
+          {
+            value: "Cùng nhau khám phá",
+            icon: "💑",
+            desc: "Cả hai đều hứng thú với lối chơi dâm thê, cùng tìm Trai đơn",
+          },
+          {
+            value: "Dục cầu bất mãn",
+            icon: "🔥",
+            desc: "Đằng trai yếu sinh lý, đằng gái chủ động tìm Trai đơn",
+          },
+          {
+            value: "Xúi giục dụ dỗ",
+            icon: "😈",
+            desc: "Đằng trai tẩy não lâu ngày, đằng gái nửa đẩy nửa đưa chấp nhận",
+          },
+          {
+            value: "Trao đổi kinh tế",
+            icon: "💸",
+            desc: "Kinh tế khó khăn, đằng trai ngầm đồng ý đằng gái bán thân kiếm tiền",
+          },
+        ],
+        solo: [
+          {
+            value: "Phản bội vụng trộm",
+            icon: "🤫",
+            desc: "Giấu bạn trai hoặc chồng, một mình lên diễn đàn hẹn hò",
+          },
+          {
+            value: "Thuần túy tìm vui",
+            icon: "🦋",
+            desc: "Nhu cầu cao, chủ động tìm Trai đơn giải tỏa",
+          },
+          {
+            value: "Trả thù ngoại tình",
+            icon: "💔",
+            desc: "Phát hiện đằng trai ngoại tình hoặc lạnh nhạt, làm vậy để trả thù",
+          },
+          { value: "Độc thân tìm vui", icon: "🎯", desc: "Trạng thái độc thân, chỉ tìm kiếm khoái cảm thể xác" },
+        ],
+      };
+
+      const maleSettingOptions = {
+        couple: [
+          { value: "Loại bàng quan", icon: "👁️", desc: "Xem toàn bộ, hưởng thụ kích thích thị giác" },
+          { value: "Loại nửa thả rông", icon: "📹", desc: "Không có mặt nhưng yêu cầu quay phim lại" },
+          { value: "Loại thả rông hoàn toàn", icon: "🚪", desc: "Không giám sát, chỉ cần kể lại sau khi xong" },
+          { value: "Loại tham gia", icon: "👥", desc: "Cùng với Trai đơn, hưởng thụ 3P" },
+          { value: "Loại khổ dâm", icon: "😔", desc: "Thích bị sỉ nhục, thậm chí liếm tinh" },
+        ],
+        solo: [
+          { value: "Loại không biết gì", icon: "❓", desc: "Đằng trai hoàn toàn không biết hành vi của đằng gái" },
+          { value: "Không có đằng trai", icon: "🚫", desc: "Trạng thái độc thân, không có bạn đời" },
+        ],
+      };
+
+      function clearAllData() {
+        localStorage.removeItem("wifeSelection");
+        Object.keys(selections).forEach((key) => (selections[key] = ""));
+        updateBottomInfo();
+      }
+
+      function saveData() {
+        localStorage.setItem("wifeSelection", JSON.stringify(selections));
+        updateBottomInfo();
+      }
+
+      function updateProgress() {
+        const progress = (currentPage / (totalPages - 1)) * 100;
+        document.getElementById("progressBar").style.width = progress + "%";
+      }
+
+      function showPage(pageNum) {
+        document.querySelectorAll(".page").forEach((page) => {
+          page.classList.remove("active");
+        });
+        document.getElementById("page" + pageNum).classList.add("active");
+        currentPage = pageNum;
+        updateProgress();
+
+        if (pageNum === 7) {
+          generateLifeStatusOptions();
+        }
+
+        if (pageNum === 9) {
+          generateMaleSettingOptions();
+        }
+
+        if (pageNum === 12) {
+          updateSummary();
+        }
+      }
+
+      function nextPage() {
+        if (currentPage < totalPages - 1) {
+          showPage(currentPage + 1);
+        }
+      }
+
+      function prevPage() {
+        if (currentPage > 0) {
+          showPage(currentPage - 1);
+        }
+      }
+
+      function scrollToNavButtons() {
+        const navButtons = document.getElementById("navButtons" + currentPage);
+        if (navButtons) {
+          navButtons.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+
+      function selectRelationshipType(value, element) {
+        const parent = element.parentElement;
+        parent.querySelectorAll(".option-card").forEach((card) => {
+          card.classList.remove("selected");
+        });
+        element.classList.add("selected");
+        selections.relationshipType = value;
+
+        selections.lifeStatus = "";
+        selections.maleSetting = "";
+
+        saveData();
+        const btn = document.getElementById("nextBtn1");
+        if (btn) {
+          btn.disabled = false;
+        }
+
+        updateRelationOptions();
+
+        setTimeout(scrollToNavButtons, 100);
+      }
+
+      function updateRelationOptions() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+        const soloOnlyCards = document.querySelectorAll(".relation-solo");
+        const coupleOnlyCards = document.querySelectorAll(
+          ".option-card:not(.relation-solo)"
+        );
+
+        soloOnlyCards.forEach((card) => {
+          card.style.display = isSolo ? "block" : "block";
+        });
+      }
+
+      function selectOption(category, value, element) {
+        const parent = element.parentElement;
+        parent.querySelectorAll(".option-card").forEach((card) => {
+          card.classList.remove("selected");
+        });
+        element.classList.add("selected");
+        selections[category] = value;
+        saveData();
+        const btnId = "nextBtn" + currentPage;
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.disabled = false;
+        }
+        setTimeout(scrollToNavButtons, 100);
+      }
+
+      function selectCustomOption(category, element) {
+        const parent = element.parentElement;
+        parent.querySelectorAll(".option-card").forEach((card) => {
+          card.classList.remove("selected");
+        });
+        element.classList.add("selected");
+        const input = element.querySelector(".custom-input");
+        input.focus();
+
+        const btnId = "nextBtn" + currentPage;
+        const btn = document.getElementById(btnId);
+
+        input.addEventListener("input", function () {
+          const value = this.value.trim();
+          if (value) {
+            selections[category] = value;
+            saveData();
+            if (btn) {
+              btn.disabled = false;
+            }
+          } else {
+            selections[category] = "";
+            if (btn) {
+              btn.disabled = true;
+            }
+          }
+        });
+
+        if (input.value.trim()) {
+          selections[category] = input.value.trim();
+          saveData();
+          if (btn) {
+            btn.disabled = false;
+          }
+        }
+        setTimeout(scrollToNavButtons, 100);
+      }
+
+      function generateLifeStatusOptions() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+        const options = isSolo
+          ? lifeStatusOptions.solo
+          : lifeStatusOptions.couple;
+        const grid = document.getElementById("lifeStatusOptionsGrid");
+        const title = document.getElementById("lifeStatusTitle");
+        const desc = document.getElementById("lifeStatusDesc");
+
+        if (isSolo) {
+          title.textContent = "Động cơ hẹn hò";
+          desc.textContent = "Tại sao cô ấy lên diễn đàn tìm Trai đơn";
+        } else {
+          title.textContent = "Trạng thái cuộc sống";
+          desc.textContent = "Tại sao cặp đôi/vợ chồng gia nhập giới dâm thê";
+        }
+
+        let html = "";
+        options.forEach((opt) => {
+          const isSelected =
+            selections.lifeStatus === opt.value ? "selected" : "";
+          html += `
+            <div class="option-card ${isSelected}" onclick="selectOption('lifeStatus', '${opt.value}', this)">
+              <div class="icon">${opt.icon}</div>
+              <div class="label">${opt.value}</div>
+              <div class="desc">${opt.desc}</div>
+            </div>
+          `;
+        });
+
+        html += `
+          <div class="option-card" onclick="selectCustomOption('lifeStatus', this)">
+            <div class="icon">✏️</div>
+            <div class="label">Tùy chỉnh</div>
+            <input
+              type="text"
+              class="custom-input"
+              placeholder="Nhập trạng thái tùy chỉnh"
+              onclick="event.stopPropagation()"
+              data-category="lifeStatus"
+            />
+          </div>
+        `;
+
+        grid.innerHTML = html;
+
+        const btn = document.getElementById("nextBtn7");
+        if (btn) {
+          btn.disabled = !selections.lifeStatus;
+        }
+      }
+
+      function generateMaleSettingOptions() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+        const options = isSolo
+          ? maleSettingOptions.solo
+          : maleSettingOptions.couple;
+        const grid = document.getElementById("maleSettingOptionsGrid");
+        const title = document.getElementById("maleSettingTitle");
+        const desc = document.getElementById("maleSettingDesc");
+
+        if (isSolo) {
+          title.textContent = "Trạng thái bạn đời";
+          desc.textContent = "Tình hình bạn đời của cô ấy";
+        } else {
+          title.textContent = "Thiết lập đằng trai";
+          desc.textContent = "Vai trò của đằng trai trong hoạt động dâm thê";
+        }
+
+        let html = "";
+        options.forEach((opt) => {
+          const isSelected =
+            selections.maleSetting === opt.value ? "selected" : "";
+          html += `
+            <div class="option-card ${isSelected}" onclick="selectOption('maleSetting', '${opt.value}', this)">
+              <div class="icon">${opt.icon}</div>
+              <div class="label">${opt.value}</div>
+              <div class="desc">${opt.desc}</div>
+            </div>
+          `;
+        });
+
+        html += `
+          <div class="option-card" onclick="selectCustomOption('maleSetting', this)">
+            <div class="icon">✏️</div>
+            <div class="label">Tùy chỉnh</div>
+            <input
+              type="text"
+              class="custom-input"
+              placeholder="Nhập thiết lập tùy chỉnh"
+              onclick="event.stopPropagation()"
+              data-category="maleSetting"
+            />
+          </div>
+        `;
+
+        grid.innerHTML = html;
+
+        const btn = document.getElementById("nextBtn9");
+        if (btn) {
+          btn.disabled = !selections.maleSetting;
+        }
+      }
+
+      function updateSummary() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+
+        document.getElementById("summaryRelationshipType").textContent =
+          selections.relationshipType || "-";
+        document.getElementById("summaryBody").textContent =
+          selections.body || "-";
+        document.getElementById("summaryPersonality").textContent =
+          selections.personality || "-";
+        document.getElementById("summaryAge").textContent =
+          selections.age || "-";
+        document.getElementById("summaryRelation").textContent =
+          selections.relation || "-";
+        document.getElementById("summaryCareer").textContent =
+          selections.career || "-";
+        document.getElementById("summaryLifeStatus").textContent =
+          selections.lifeStatus || "-";
+        document.getElementById("summaryPastExperience").textContent =
+          selections.pastExperience || "-";
+        document.getElementById("summaryMaleSetting").textContent =
+          selections.maleSetting || "-";
+        document.getElementById("summaryHerKink").textContent =
+          selections.herKink || "-";
+        document.getElementById("summaryMyKink").textContent =
+          selections.myKink || "-";
+
+        const maleSettingRow = document.getElementById("summaryMaleSettingRow");
+        if (maleSettingRow) {
+          const label = maleSettingRow.querySelector(".summary-label");
+          if (isSolo) {
+            label.textContent = "Trạng thái bạn đời";
+          } else {
+            label.textContent = "Thiết lập đằng trai";
+          }
+        }
+      }
+
+      function updateBottomInfo() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+
+        document.getElementById("infoRelationshipType").textContent =
+          selections.relationshipType || "-";
+        document.getElementById("infoBody").textContent =
+          selections.body || "-";
+        document.getElementById("infoPersonality").textContent =
+          selections.personality || "-";
+        document.getElementById("infoAge").textContent = selections.age || "-";
+        document.getElementById("infoRelation").textContent =
+          selections.relation || "-";
+        document.getElementById("infoCareer").textContent =
+          selections.career || "-";
+        document.getElementById("infoLifeStatus").textContent =
+          selections.lifeStatus || "-";
+        document.getElementById("infoPastExperience").textContent =
+          selections.pastExperience || "-";
+        document.getElementById("infoMaleSetting").textContent =
+          selections.maleSetting || "-";
+        document.getElementById("infoHerKink").textContent =
+          selections.herKink || "-";
+        document.getElementById("infoMyKink").textContent =
+          selections.myKink || "-";
+
+        const maleSettingRow = document.getElementById("infoMaleSettingRow");
+        if (maleSettingRow) {
+          const label = maleSettingRow.querySelector(".info-label");
+          if (isSolo) {
+            label.textContent = "Trạng thái bạn đời";
+          } else {
+            label.textContent = "Thiết lập đằng trai";
+          }
+        }
+      }
+
+      function submitSelection() {
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+
+        showInfoModal(
+          "Bắt đầu trò chơi",
+          "Chuẩn bị tạo nội dung...<br><br>Khuyên bạn sau khi AI tạo xong，hãy tải lại trang thủ công để ẩn lầu 1",
+          function () {
+            let message;
+            if (isSolo) {
+              message = `【Bắt đầu chọn】Loại quan hệ là${selections.relationshipType}。Tôi muốn một${selections.body}、${selections.personality}、Độ tuổi khoảng${selections.age}、Nghề nghiệp là${selections.career}người phụ nữ,quan hệ giữa tôi và cô ấy là${selections.relation}。Lý do cô ấy lên diễn đàn là${selections.lifeStatus},Trải nghiệm quá khứ của cô ấy là${selections.pastExperience},Trạng thái bạn đời là${selections.maleSetting}。Sở thích tình dục của cô ấy là${selections.herKink},Sở thích tình dục của tôi là${selections.myKink}。Nghiêm ngặt tuân theo<status_current_variables>cấp độ trong và<wife_forum_glossary>nội dung của để sáng tác và tạo bài đăng hẹn hò。`;
+            } else {
+              message = `【Bắt đầu chọn】Loại quan hệ là${selections.relationshipType}。Tôi muốn một${selections.body}、${selections.personality}、Độ tuổi khoảng${selections.age}、Nghề nghiệp là${selections.career}người phụ nữ,quan hệ giữa tôi và cô ấy là${selections.relation}。Lý do cặp đôi/vợ chồng gia nhập giới dâm thê là${selections.lifeStatus},Trải nghiệm quá khứ của cô ấy là${selections.pastExperience},Vai trò của đằng trai trong hoạt động dâm thê là${selections.maleSetting}。Sở thích tình dục của cô ấy là${selections.herKink},Sở thích tình dục của tôi là${selections.myKink}。Nghiêm ngặt tuân theo<status_current_variables>cấp độ trong và<wife_forum_glossary>nội dung của để sáng tác và tạo bài đăng hẹn hò。`;
+            }
+            const command = `/send ${message} | /trigger`;
+            if (typeof triggerSlash === "function") {
+              triggerSlash(command);
+              clearAllData();
+            } else {
+              alert("Gửi thất bại: Không tìm thấy môi trường SillyTavern");
+            }
+          }
+        );
+      }
+
+      function viewForum() {
+        document.getElementById("confirmModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("confirmModal").classList.remove("active");
+      }
+
+      function confirmViewForum() {
+        closeModal();
+        showInfoModal(
+          "Xem diễn đàn",
+          "Chuẩn bị vào diễn đàn...<br><br>Khuyên bạn sau khi AI tạo xong，hãy tải lại trang thủ công để ẩn lầu 1",
+          function () {
+            const message = `Mở diễn đàn`;
+            const command = `/send ${message} | /trigger`;
+            if (typeof triggerSlash === "function") {
+              triggerSlash(command);
+            } else {
+              alert("Gửi thất bại: Không tìm thấy môi trường SillyTavern");
+            }
+          }
+        );
+      }
+
+      function showInfoModal(title, message, callback) {
+        const modal = document.getElementById("confirmModal");
+        const modalTitle = modal.querySelector(".modal-title");
+        const modalMessage = modal.querySelector(".modal-message");
+        const modalButtons = modal.querySelector(".modal-buttons");
+
+        modalTitle.textContent = title;
+        modalMessage.innerHTML = message;
+        modalButtons.innerHTML =
+          '<button class="modal-btn modal-btn-confirm" onclick="closeInfoModal()">Đã hiểu</button>';
+
+        modal.classList.add("active");
+
+        window.infoModalCallback = callback;
+      }
+
+      function closeInfoModal() {
+        const modal = document.getElementById("confirmModal");
+        modal.classList.remove("active");
+
+        if (window.infoModalCallback) {
+          window.infoModalCallback();
+          window.infoModalCallback = null;
+        }
+
+        setTimeout(() => {
+          const modalTitle = modal.querySelector(".modal-title");
+          const modalMessage = modal.querySelector(".modal-message");
+          const modalButtons = modal.querySelector(".modal-buttons");
+
+          modalTitle.textContent = "Xác nhận thao tác";
+          modalMessage.innerHTML =
+            "Thao tác này sẽ bỏ qua quy trình tùy chỉnh nhân thê，vào thẳng chế độ lướt diễn đàn。";
+          modalButtons.innerHTML =
+            '<button class="modal-btn modal-btn-cancel" onclick="closeModal()">Hủy</button><button class="modal-btn modal-btn-confirm" onclick="confirmViewForum()">Xác nhận</button>';
+        }, 300);
+      }
+
+      function randomSelection() {
+        const options = {
+          relationshipType: ["Bạn gái", "Nhân thê đã kết hôn", "Phụ nữ độc thân"],
+          body: ["Ngự tỷ đẫy đà", "Thiếu phụ mảnh mai", "Nhân thê hơi mập", "Bà mẹ nóng bỏng khỏe khoắn", "Nhỏ nhắn xinh xắn"],
+          personality: [
+            "Dịu dàng hiền thục",
+            "Lạnh lùng kiêu ngạo",
+            "Lẳng lơ phóng túng",
+            "Thanh thuần bảo thủ",
+            "Tri thức tao nhã",
+            "Độc lập mạnh mẽ",
+          ],
+          age: ["25-30 tuổi", "30-35 tuổi", "35-40 tuổi", "40-45 tuổi", "Trên 45 tuổi"],
+          relation: [
+            "Hẹn hò diễn đàn",
+            "Hàng xóm vụng trộm",
+            "Đối tượng của bạn tốt",
+            "Đối tượng của cấp trên",
+            "Bạn gái cũ",
+            "Hẹn hò người lạ",
+            "Người quen vụng trộm",
+          ],
+          career: [
+            "Người đẹp văn phòng",
+            "Nội trợ toàn thời gian",
+            "Giáo viên",
+            "Nhân viên y tế",
+            "Bà chủ doanh nghiệp",
+            "Nghề nghiệp tự do",
+          ],
+          pastExperience: [
+            "Bạn gái thanh thuần",
+            "Trải nghiệm bình thường",
+            "Quá khứ phóng túng",
+            "Từng ngoại tình",
+            "Từng bị điều giáo",
+            "Lão làng hẹn hò",
+          ],
+          myKink: [
+            "Dịu dàng quấn quýt",
+            "Thô bạo chinh phục",
+            "Sỉ nhục điều giáo",
+            "Quay phim ghi lại",
+            "NTR trước mặt",
+            "Phối hợp chủ đạo",
+          ],
+        };
+
+        const personalityBehaviorMap = {
+          "Dịu dàng hiền thục": {
+            herKink: ["Bị động thừa nhận", "Sở thích khẩu giao"],
+            coupleLifeStatus: ["Chủ động dâng hiến", "Cùng nhau khám phá", "Xúi giục dụ dỗ"],
+            soloLifeStatus: ["Phản bội vụng trộm"],
+          },
+          "Lạnh lùng kiêu ngạo": {
+            herKink: ["Bị động thừa nhận", "Chủ động đòi hỏi", "Khai phá hậu đình"],
+            coupleLifeStatus: ["Cùng nhau khám phá", "Xúi giục dụ dỗ", "Trao đổi kinh tế"],
+            soloLifeStatus: ["Trả thù ngoại tình", "Phản bội vụng trộm"],
+          },
+          "Lẳng lơ phóng túng": {
+            herKink: ["Chủ động đòi hỏi", "Sở thích khẩu giao", "Khai phá hậu đình", "Vận động nhiều người"],
+            coupleLifeStatus: ["Cùng nhau khám phá", "Dục cầu bất mãn", "Trao đổi kinh tế"],
+            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân tìm vui"],
+          },
+          "Thanh thuần bảo thủ": {
+            herKink: ["Bị động thừa nhận"],
+            coupleLifeStatus: ["Chủ động dâng hiến", "Xúi giục dụ dỗ"],
+            soloLifeStatus: ["Phản bội vụng trộm"],
+          },
+          "Tri thức tao nhã": {
+            herKink: ["Bị động thừa nhận", "Chủ động đòi hỏi", "Sở thích khẩu giao"],
+            coupleLifeStatus: ["Cùng nhau khám phá", "Chủ động dâng hiến"],
+            soloLifeStatus: ["Thuần túy tìm vui", "Trả thù ngoại tình"],
+          },
+          "Độc lập mạnh mẽ": {
+            herKink: ["Chủ động đòi hỏi", "Chủ đạo kiểm soát", "Vận động nhiều người"],
+            coupleLifeStatus: ["Cùng nhau khám phá", "Dục cầu bất mãn"],
+            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân tìm vui"],
+          },
+        };
+        
+        Object.keys(options).forEach((key) => {
+          selections[key] =
+            options[key][Math.floor(Math.random() * options[key].length)];
+        });
+
+        const isSolo = selections.relationshipType === "Phụ nữ độc thân";
+        const personality = selections.personality;
+        const behaviorMap =
+          personalityBehaviorMap[personality] ||
+          personalityBehaviorMap["Lẳng lơ phóng túng"];
+
+        if (isSolo) {
+          const soloLifeStatusOptions =
+            behaviorMap.soloLifeStatus ||
+            lifeStatusOptions.solo.map((o) => o.value);
+          selections.lifeStatus =
+            soloLifeStatusOptions[
+              Math.floor(Math.random() * soloLifeStatusOptions.length)
+            ];
+
+          if (selections.lifeStatus === "Độc thân hẹn hò") {
+            selections.maleSetting = "Không có đằng trai";
+          } else {
+            selections.maleSetting = "Loại không biết gì";
+          }
+
+          const soloRelations = ["Hẹn hò người lạ", "Người quen vụng trộm", "Hẹn hò diễn đàn"];
+          selections.relation =
+            soloRelations[Math.floor(Math.random() * soloRelations.length)];
+        } else {
+          const coupleLifeStatusOptions =
+            behaviorMap.coupleLifeStatus ||
+            lifeStatusOptions.couple.map((o) => o.value);
+          selections.lifeStatus =
+            coupleLifeStatusOptions[
+              Math.floor(Math.random() * coupleLifeStatusOptions.length)
+            ];
+
+          const maleSettingOpts = [
+            "Loại bàng quan",
+            "Loại nửa thả rông",
+            "Loại thả rông hoàn toàn",
+            "Loại tham gia",
+            "Loại khổ dâm",
+          ];
+          selections.maleSetting =
+            maleSettingOpts[Math.floor(Math.random() * maleSettingOpts.length)];
+        }
+
+        const herKinkOptions = behaviorMap.herKink || ["Bị động thừa nhận", "Chủ động đòi hỏi"];
+        selections.herKink =
+          herKinkOptions[Math.floor(Math.random() * herKinkOptions.length)];
+
+        if (selections.herKink === "Chủ đạo kiểm soát" && Math.random() > 0.5) {
+          selections.myKink = "Phối hợp chủ đạo";
+        }
+
+        saveData();
+
+        document.querySelectorAll(".page").forEach((page) => {
+          page.querySelectorAll(".option-card").forEach((card) => {
+            card.classList.remove("selected");
+          });
+        });
+
+        showPage(12);
+      }
+
+      function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById("theme-icon");
+        if (body.getAttribute("data-theme") === "light") {
+          body.removeAttribute("data-theme");
+          icon.textContent = "🌙";
+        } else {
+          body.setAttribute("data-theme", "light");
+          icon.textContent = "☀️";
+        }
+      }
+
+      document.querySelectorAll(".custom-input").forEach((input) => {
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            const category = this.getAttribute("data-category");
+            if (this.value.trim()) {
+              selections[category] = this.value.trim();
+              saveData();
+              nextPage();
+            }
+          }
+        });
+      });
+
+      updateProgress();
+      updateBottomInfo();
+    </script>
+  </body>
+</html>
