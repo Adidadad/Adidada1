@@ -2018,38 +2018,38 @@
         };
 
         const personalityBehaviorMap = {
-          Dịu_dàng_hiền_thục: {
+          "Dịu dàng hiền thục": {
             herKink: ["Bị động thừa nhận", "Sở thích khẩu giao"],
             coupleLifeStatus: ["Chủ động dâng hiến", "Cùng nhau khám phá", "Xúi giục dụ dỗ"],
             soloLifeStatus: ["Phản bội vụng trộm"],
           },
-          Lạnh_lùng_kiêu_ngạo: {
+          "Lạnh lùng kiêu ngạo": {
             herKink: ["Bị động thừa nhận", "Chủ động đòi hỏi", "Khai phá hậu đình"],
             coupleLifeStatus: ["Cùng nhau khám phá", "Xúi giục dụ dỗ", "Trao đổi kinh tế"],
             soloLifeStatus: ["Trả thù ngoại tình", "Phản bội vụng trộm"],
           },
-          Lẳng_lơ_phóng_túng: {
+          "Lẳng lơ phóng túng": {
             herKink: ["Chủ động đòi hỏi", "Sở thích khẩu giao", "Khai phá hậu đình", "Vận động nhiều người"],
             coupleLifeStatus: ["Cùng nhau khám phá", "Dục cầu bất mãn", "Trao đổi kinh tế"],
-            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân hẹn hò"],
+            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân tìm vui"],
           },
-          Thanh_thuần_bảo_thủ: {
+          "Thanh thuần bảo thủ": {
             herKink: ["Bị động thừa nhận"],
             coupleLifeStatus: ["Chủ động dâng hiến", "Xúi giục dụ dỗ"],
             soloLifeStatus: ["Phản bội vụng trộm"],
           },
-          Tri_thức_tao_nhã: {
+          "Tri thức tao nhã": {
             herKink: ["Bị động thừa nhận", "Chủ động đòi hỏi", "Sở thích khẩu giao"],
             coupleLifeStatus: ["Cùng nhau khám phá", "Chủ động dâng hiến"],
             soloLifeStatus: ["Thuần túy tìm vui", "Trả thù ngoại tình"],
           },
-          Độc_lập_mạnh_mẽ: {
+          "Độc lập mạnh mẽ": {
             herKink: ["Chủ động đòi hỏi", "Chủ đạo kiểm soát", "Vận động nhiều người"],
             coupleLifeStatus: ["Cùng nhau khám phá", "Dục cầu bất mãn"],
-            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân hẹn hò"],
+            soloLifeStatus: ["Thuần túy tìm vui", "Độc thân tìm vui"],
           },
         };
-
+        
         Object.keys(options).forEach((key) => {
           selections[key] =
             options[key][Math.floor(Math.random() * options[key].length)];
